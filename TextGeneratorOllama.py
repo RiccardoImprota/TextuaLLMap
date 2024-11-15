@@ -26,7 +26,7 @@ for prompt in Prompts:
         for i in range(n):
             # Define the payload for the request
             payload = {
-                "model": "Meollama run llama3.1:70b",
+                "model": "llama3.1:70b",
                 "prompt": f"Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n{Prompts[prompt]}",
                 "temperature": 0.5,
                 "max_tokens": 1000
