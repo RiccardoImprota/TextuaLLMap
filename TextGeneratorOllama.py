@@ -5,6 +5,43 @@ import json
 # Define the base URL for the Ollama API
 BASE_URL = "http://localhost:11434/api"  # Replace with the correct port for your Ollama instance
 
+def ask_question(prompt):
+    messages = [
+        {
+            'role': 'system',
+            'content': 'Below is an instruction that describes a task. Write a response that appropriately completes the request.'
+        },
+        {
+            'role': 'user',
+            'content': prompt
+        }
+    ]
+
+    # Define options, including temperature and max_tokens (num_predict)
+    options = {
+        'temperature': 0.5,    # Controls randomness: 0 (deterministic) to 1 (creative)
+        'num_predict': 1000      # Maximum number of tokens to generate
+    }
+
+    try:
+        # Call the Ollama chat function with model, messages, and options
+        response = ollama.chat(
+            model='llama3.1:70b',
+            messages=messages,
+            options=options
+        )
+
+        # Print the response from the model
+        return response['message']['content']
+
+    except ollama.ResponseError as e:
+        # Handle errors (e.g., model not found, connection issues)
+        print('An error occurred:', e.error)
+        if e.status_code == 404:
+            print('Model not found. Please ensure the model name is correct and pulled.')
+        else:
+            print(f'Error Status Code: {e.status_code}')
+
 # Number of iterations
 n = 2
 
@@ -21,25 +58,14 @@ for prompt in Prompts:
     results = []
 
     # Process only specific prompts
-    if prompt in {"math", "misinformationhealth"}:
+    if prompt in {"climate","gwarming","math", "misinformationhealth"}:
         print(f"Starting {prompt}")
         for i in range(n):
-            # Define the payload for the request
-            payload = {
-                "model": "llama3.1:70b",
-                "prompt": f"Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n{Prompts[prompt]}",
-                "temperature": 0.5,
-                "max_tokens": 1000
-            }
+            
+            
+            response = ask_question(prompt)
 
-            # Send a request to the Ollama API
-            response = requests.post(f"{BASE_URL}/generate", json=payload)
-
-            if response.status_code == 200:
-                message = response.json()
-                results.append(message.get("response", ""))
-            else:
-                print(f"Error at iteration {i}: {response.text}")
+            results.append(response)
 
             # Logging for progress
             if i < 50 or i % 100 == 0:
