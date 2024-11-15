@@ -1,6 +1,7 @@
 
 import requests
 import json
+import ollama
 
 # Define the base URL for the Ollama API
 BASE_URL = "http://localhost:11434/api"  # Replace with the correct port for your Ollama instance
