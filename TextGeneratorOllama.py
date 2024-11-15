@@ -64,7 +64,7 @@ for prompt in Prompts:
         for i in range(n):
             
             
-            response = ask_question(prompt)
+            response = ask_question(Prompts[prompt])
 
             results.append(response)
 
