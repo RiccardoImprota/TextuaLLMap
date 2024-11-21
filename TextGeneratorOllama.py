@@ -73,6 +73,6 @@ for prompt in Prompts:
                 print(f"iter: {i}")
 
         # Save results to a file
-        output_path = f"{n}_{prompt}_Meta-Llama-3-70B-Q4_temp0-5.json"
+        output_path = f"texts/{n}_{prompt}_Meta-Llama-3-70B-Q4_temp0-5.json"
         with open(output_path, 'w') as json_file:
             json.dump(results, json_file, indent=1)
